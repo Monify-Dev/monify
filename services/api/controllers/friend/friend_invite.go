@@ -35,6 +35,18 @@ func (s Service) InviteFriend(ctx context.Context, req *monify.InviteFriendReque
 		return nil, status.Error(codes.InvalidArgument, "Cannot send invitation to yourself.")
 	}
 
+	query = db.QueryRowContext(ctx,
+		`SELECT COUNT(*) FROM friend_invite WHERE receiver = $1 AND sender = $2`, userId, receiverId)
+	var invite_count int
+	if err := query.Scan(&invite_count); err != nil {
+		logger.Error("Scan invite_count error.", zap.Error(err))
+		return nil, status.Error(codes.Internal, "")
+	}
+
+	if invite_count != 0 {
+		return nil, status.Error(codes.AlreadyExists, "The receiver has invited you.")
+	}
+
 	inviteId := uuid.New()
 	_, err := db.ExecContext(ctx,
 		`INSERT INTO friend_invite (invite_id, sender, receiver) VALUES ($1, $2, $3)`,

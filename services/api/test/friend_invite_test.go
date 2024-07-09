@@ -17,6 +17,7 @@ func TestInviteFriend(t *testing.T) {
 	_, err = client.InviteFriend(context.TODO(), &monify.InviteFriendRequest{ReceiverNickId: "test_nickId1"})
 	assert.Error(t, err) // cannot send invitation to yourself
 	user2 := client.CreateTestUser()
+	_, err = client.UpdateUserNickId(context.Background(), &monify.UpdateUserNickIdRequest{NickId: "test_nickId2"})
 	_, err = client.InviteFriend(context.TODO(), &monify.InviteFriendRequest{ReceiverNickId: "test_nickId1"})
 	assert.NoError(t, err)
 	user3 := client.CreateTestUser()
@@ -25,9 +26,11 @@ func TestInviteFriend(t *testing.T) {
 	_ = client.CreateTestUser()
 	_, err = client.InviteFriend(context.TODO(), &monify.InviteFriendRequest{ReceiverNickId: "test_nickId1"})
 	assert.NoError(t, err)
+	client.SetTestUser(user1)
+	_, err = client.InviteFriend(context.TODO(), &monify.InviteFriendRequest{ReceiverNickId: "test_nickId2"})
+	assert.Error(t, err) // user2 has invited user1
 
 	// test list invitation
-	client.SetTestUser(user1)
 	invitaions, err := client.ListFriendInvitation(context.TODO(), &monify.FriendEmpty{})
 	assert.NoError(t, err)
 	assert.Equal(t, len(invitaions.GetInvitation()), 3)
