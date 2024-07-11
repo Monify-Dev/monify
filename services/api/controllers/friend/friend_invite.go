@@ -15,8 +15,8 @@ import (
 func (s Service) InviteFriend(ctx context.Context, req *monify.InviteFriendRequest) (*monify.InviteFriendResponse, error) {
 
 	logger := ctx.Value(lib.LoggerContextKey{}).(*zap.Logger)
-	userId := ctx.Value(lib.UserIdContextKey{}).(uuid.UUID)
-	if userId == uuid.Nil {
+	userId, ok := ctx.Value(lib.UserIdContextKey{}).(uuid.UUID)
+	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "Unauthorized.")
 	}
 	receiver_nickId := req.GetReceiverNickId()
@@ -33,6 +33,18 @@ func (s Service) InviteFriend(ctx context.Context, req *monify.InviteFriendReque
 
 	if receiverId == userId.String() {
 		return nil, status.Error(codes.InvalidArgument, "Cannot send invitation to yourself.")
+	}
+
+	query = db.QueryRowContext(ctx,
+		`SELECT COUNT(*) FROM friend_invite WHERE receiver = $1 AND sender = $2`, userId, receiverId)
+	var invite_count int
+	if err := query.Scan(&invite_count); err != nil {
+		logger.Error("Scan invite_count error.", zap.Error(err))
+		return nil, status.Error(codes.Internal, "")
+	}
+
+	if invite_count != 0 {
+		return nil, status.Error(codes.AlreadyExists, "The receiver has invited you.")
 	}
 
 	inviteId := uuid.New()
