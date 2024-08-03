@@ -1,0 +1,73 @@
+syntax = "proto3";
+option go_package = "github.com/SpeedReach/monify";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+message MEmpty{}
+
+service FriendBillService {
+    rpc CreateFriendBill(CreateFriendBillRequest) returns (CreateFriendBillResponse) {
+        option (google.api.http) = {
+            post: "/v1/friend_bill"
+            body: "*"
+        };
+    }
+
+    rpc DeleteFriendBill(DeleteFriendBillRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/v1/friend_bill"
+        };
+    }
+
+    rpc ModifyFriendBill(ModifyFriendBillRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            put: "/v1/friend_bill"
+            body: "*"
+        };
+    }
+
+    rpc GetFriendBill (GetFriendBillRequest) returns (GetFriendBillResponse) {
+        option (google.api.http) = {
+            get: "/v1/friend_bill"
+        };
+    }
+}
+
+message CreateFriendBillRequest {
+    string relation_id = 1;
+    double amount = 2;
+    string title = 3;
+    string description = 4;
+}
+
+message CreateFriendBillResponse {
+    string friend_bill_id = 1;
+}
+
+message DeleteFriendBillRequest {
+    string friend_bill_id = 1;
+}
+
+message ModifyFriendBillRequest {
+    string friend_bill_id = 1;
+    double amount = 2;
+    string title = 3;
+    string description = 4;
+}
+
+message GetFriendBillRequest {
+    string relation_id = 1;
+}
+
+message GetFriendBillResponse {
+    repeated FriendBill friend_bills = 1;
+    double total = 2;
+}
+
+message FriendBill {
+    string friend_bill_id = 1;
+    double amount = 2;
+    string title = 3;
+    string description = 4;
+}
