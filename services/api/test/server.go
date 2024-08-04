@@ -31,6 +31,7 @@ type Client struct {
 	monify.GroupsBillServiceClient
 	monify.UserServiceClient
 	monify.FriendServiceClient
+	monify.FriendBillServiceClient
 	users       *map[string]string
 	currentUser *string
 }
@@ -111,6 +112,7 @@ func createClient(lis *bufconn.Listener) Client {
 		GroupsBillServiceClient: monify.NewGroupsBillServiceClient(conn),
 		UserServiceClient:       monify.NewUserServiceClient(conn),
 		FriendServiceClient:     monify.NewFriendServiceClient(conn),
+		FriendBillServiceClient: monify.NewFriendBillServiceClient(conn),
 		users:                   &users,
 		currentUser:             &currentUser,
 	}
