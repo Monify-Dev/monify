@@ -56,4 +56,14 @@ func TestFriendBill(t *testing.T) {
 	friend_bills, err := client.ListFriendBill(context.TODO(), &monify.ListFriendBillRequest{RelationId: friendS_relationId[0]})
 	assert.NoError(t, err)
 	assert.Equal(t, len(friend_bills.GetFriendBills()), 2)
+
+	// Test delete friend bill
+	var friend_billId []string
+	for _, friend_bill := range friend_bills.GetFriendBills() {
+		friend_billId = append(friend_billId, friend_bill.FriendBillId)
+	}
+	_, err = client.DeleteFriendBill(context.TODO(), &monify.DeleteFriendBillRequest{FriendBillId: friend_billId[0]})
+	assert.NoError(t, err)
+	friend_bills, err = client.ListFriendBill(context.TODO(), &monify.ListFriendBillRequest{RelationId: friendS_relationId[0]})
+	assert.Equal(t, len(friend_bills.GetFriendBills()), 1)
 }
