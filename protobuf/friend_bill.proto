@@ -4,8 +4,6 @@ option go_package = "github.com/SpeedReach/monify";
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
-message MEmpty{}
-
 service FriendBillService {
     rpc CreateFriendBill(CreateFriendBillRequest) returns (CreateFriendBillResponse) {
         option (google.api.http) = {

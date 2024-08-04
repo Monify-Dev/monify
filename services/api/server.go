@@ -9,6 +9,7 @@ import (
 	monify "monify/protobuf/gen/go"
 	"monify/services/api/controllers/auth"
 	"monify/services/api/controllers/friend"
+	"monify/services/api/controllers/friend_bill"
 	"monify/services/api/controllers/group"
 	"monify/services/api/controllers/group_bill"
 	"monify/services/api/controllers/user"
@@ -51,6 +52,7 @@ func SetupServices(g *grpc.Server, config ServerConfig) {
 	monify.RegisterGroupsBillServiceServer(g, group_bill.Service{})
 	monify.RegisterUserServiceServer(g, user.Service{})
 	monify.RegisterFriendServiceServer(g, friend.Service{})
+	monify.RegisterFriendBillServiceServer(g, friend_bill.Service{})
 }
 
 func setupInterceptor(resources infra.Resources, config ServerConfig) grpc.ServerOption {
