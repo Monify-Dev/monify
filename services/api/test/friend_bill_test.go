@@ -37,6 +37,12 @@ func TestFriendBill(t *testing.T) {
 		Title:       "test1",
 		Description: "test1",
 	})
+	_, err = client.CreateFriendBill(context.TODO(), &monify.CreateFriendBillRequest{
+		RelationId:  friendS_relationId[0],
+		Amount:      500,
+		Title:       "test2",
+		Description: "test2",
+	})
 	assert.NoError(t, err)
 	_, err = client.CreateFriendBill(context.TODO(), &monify.CreateFriendBillRequest{
 		RelationId:  friendS_relationId[0],
