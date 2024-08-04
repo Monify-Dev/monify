@@ -25,7 +25,7 @@ service FriendBillService {
         };
     }
 
-    rpc GetFriendBill (GetFriendBillRequest) returns (GetFriendBillResponse) {
+    rpc ListFriendBill (ListFriendBillRequest) returns (ListFriendBillResponse) {
         option (google.api.http) = {
             get: "/v1/friend_bill"
         };
@@ -54,13 +54,13 @@ message ModifyFriendBillRequest {
     string description = 4;
 }
 
-message GetFriendBillRequest {
+message ListFriendBillRequest {
     string relation_id = 1;
 }
 
-message GetFriendBillResponse {
+message ListFriendBillResponse {
     repeated FriendBill friend_bills = 1;
-    double total = 2;
+    //double total = 2;
 }
 
 message FriendBill {

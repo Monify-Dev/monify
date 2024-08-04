@@ -52,4 +52,8 @@ func TestFriendBill(t *testing.T) {
 	})
 	assert.Error(t, err) // Amount must not be zero
 
+	// Test list friend bill
+	friend_bills, err := client.ListFriendBill(context.TODO(), &monify.ListFriendBillRequest{RelationId: friendS_relationId[0]})
+	assert.NoError(t, err)
+	assert.Equal(t, len(friend_bills.GetFriendBills()), 2)
 }

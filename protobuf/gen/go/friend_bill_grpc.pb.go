@@ -26,7 +26,7 @@ type FriendBillServiceClient interface {
 	CreateFriendBill(ctx context.Context, in *CreateFriendBillRequest, opts ...grpc.CallOption) (*CreateFriendBillResponse, error)
 	DeleteFriendBill(ctx context.Context, in *DeleteFriendBillRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	ModifyFriendBill(ctx context.Context, in *ModifyFriendBillRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	GetFriendBill(ctx context.Context, in *GetFriendBillRequest, opts ...grpc.CallOption) (*GetFriendBillResponse, error)
+	ListFriendBill(ctx context.Context, in *ListFriendBillRequest, opts ...grpc.CallOption) (*ListFriendBillResponse, error)
 }
 
 type friendBillServiceClient struct {
@@ -64,9 +64,9 @@ func (c *friendBillServiceClient) ModifyFriendBill(ctx context.Context, in *Modi
 	return out, nil
 }
 
-func (c *friendBillServiceClient) GetFriendBill(ctx context.Context, in *GetFriendBillRequest, opts ...grpc.CallOption) (*GetFriendBillResponse, error) {
-	out := new(GetFriendBillResponse)
-	err := c.cc.Invoke(ctx, "/FriendBillService/GetFriendBill", in, out, opts...)
+func (c *friendBillServiceClient) ListFriendBill(ctx context.Context, in *ListFriendBillRequest, opts ...grpc.CallOption) (*ListFriendBillResponse, error) {
+	out := new(ListFriendBillResponse)
+	err := c.cc.Invoke(ctx, "/FriendBillService/ListFriendBill", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +80,7 @@ type FriendBillServiceServer interface {
 	CreateFriendBill(context.Context, *CreateFriendBillRequest) (*CreateFriendBillResponse, error)
 	DeleteFriendBill(context.Context, *DeleteFriendBillRequest) (*emptypb.Empty, error)
 	ModifyFriendBill(context.Context, *ModifyFriendBillRequest) (*emptypb.Empty, error)
-	GetFriendBill(context.Context, *GetFriendBillRequest) (*GetFriendBillResponse, error)
+	ListFriendBill(context.Context, *ListFriendBillRequest) (*ListFriendBillResponse, error)
 	mustEmbedUnimplementedFriendBillServiceServer()
 }
 
@@ -97,8 +97,8 @@ func (UnimplementedFriendBillServiceServer) DeleteFriendBill(context.Context, *D
 func (UnimplementedFriendBillServiceServer) ModifyFriendBill(context.Context, *ModifyFriendBillRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ModifyFriendBill not implemented")
 }
-func (UnimplementedFriendBillServiceServer) GetFriendBill(context.Context, *GetFriendBillRequest) (*GetFriendBillResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetFriendBill not implemented")
+func (UnimplementedFriendBillServiceServer) ListFriendBill(context.Context, *ListFriendBillRequest) (*ListFriendBillResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListFriendBill not implemented")
 }
 func (UnimplementedFriendBillServiceServer) mustEmbedUnimplementedFriendBillServiceServer() {}
 
@@ -167,20 +167,20 @@ func _FriendBillService_ModifyFriendBill_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FriendBillService_GetFriendBill_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetFriendBillRequest)
+func _FriendBillService_ListFriendBill_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListFriendBillRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FriendBillServiceServer).GetFriendBill(ctx, in)
+		return srv.(FriendBillServiceServer).ListFriendBill(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/FriendBillService/GetFriendBill",
+		FullMethod: "/FriendBillService/ListFriendBill",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FriendBillServiceServer).GetFriendBill(ctx, req.(*GetFriendBillRequest))
+		return srv.(FriendBillServiceServer).ListFriendBill(ctx, req.(*ListFriendBillRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -205,8 +205,8 @@ var FriendBillService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _FriendBillService_ModifyFriendBill_Handler,
 		},
 		{
-			MethodName: "GetFriendBill",
-			Handler:    _FriendBillService_GetFriendBill_Handler,
+			MethodName: "ListFriendBill",
+			Handler:    _FriendBillService_ListFriendBill_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
