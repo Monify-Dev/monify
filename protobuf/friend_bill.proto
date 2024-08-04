@@ -49,9 +49,10 @@ message DeleteFriendBillRequest {
 
 message ModifyFriendBillRequest {
     string friend_bill_id = 1;
-    double amount = 2;
-    string title = 3;
-    string description = 4;
+    string relation_id = 2;
+    double amount = 3;
+    string title = 4;
+    string description = 5;
 }
 
 message ListFriendBillRequest {

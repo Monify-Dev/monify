@@ -17,25 +17,21 @@ func (s Service) CreateFriendBill(ctx context.Context, req *monify.CreateFriendB
 	if req.Title == "" {
 		return nil, status.Error(codes.InvalidArgument, "Title is required")
 	}
-	if req.Amount <= 0 {
-		return nil, status.Error(codes.InvalidArgument, "Amount should be more than zero")
+	if req.Amount == 0 {
+		return nil, status.Error(codes.InvalidArgument, "Amount should not be zero")
 	}
 	_, ok := ctx.Value(lib.UserIdContextKey{}).(uuid.UUID)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
 	}
-	relationId, err := uuid.Parse(req.RelationId)
-	if err != nil {
-		return nil, status.Error(codes.InvalidArgument, "Invalid relation id")
-	}
 
 	//Insert
 	friend_billId := uuid.New()
 	db := ctx.Value(lib.DatabaseContextKey{}).(*sql.DB)
-	_, err = db.ExecContext(ctx, `
+	_, err := db.ExecContext(ctx, `
 		INSERT INTO friend_bill (friend_bill_id, relation_id, amount, title, description)
 		VALUES ($1, $2, $3, $4, $5)
-	`, friend_billId, relationId, req.Amount, req.Title, req.Description)
+	`, friend_billId, req.RelationId, req.Amount, req.Title, req.Description)
 	if err != nil {
 		logger.Error("Insert values into friend_bill error.", zap.Error(err))
 		return nil, status.Error(codes.Internal, "")
