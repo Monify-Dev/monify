@@ -12,8 +12,9 @@ CREATE TABLE friend_bill(
     friend_bill_id uuid PRIMARY KEY,
     relation_id uuid NOT NULL REFERENCES friend(relation_id),
     amount double precision NOT NULL,
-    title varchar(50) NOT NULL ,
+    title varchar(50) NOT NULL,
     description varchar(100) NOT NULL default '',
+    in_debt varchar(30) NOT NULL,
     created_at timestamp NOT NULL default CURRENT_TIMESTAMP
 )
 
