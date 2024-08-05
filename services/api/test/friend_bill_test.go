@@ -36,12 +36,14 @@ func TestFriendBill(t *testing.T) {
 		Amount:      300,
 		Title:       "test1",
 		Description: "test1",
+		InDebt:      "friend_bill_nickId1",
 	})
 	_, err = client.CreateFriendBill(context.TODO(), &monify.CreateFriendBillRequest{
 		RelationId:  friendS_relationId[0],
 		Amount:      500,
 		Title:       "test2",
 		Description: "test2",
+		InDebt:      "friend_bill_nickId1",
 	})
 	assert.NoError(t, err)
 	_, err = client.CreateFriendBill(context.TODO(), &monify.CreateFriendBillRequest{
@@ -49,6 +51,7 @@ func TestFriendBill(t *testing.T) {
 		Amount:      0,
 		Title:       "test2",
 		Description: "test2",
+		InDebt:      "friend_bill_nickId1",
 	})
 	assert.Error(t, err) // Amount must not be zero
 
@@ -59,9 +62,11 @@ func TestFriendBill(t *testing.T) {
 	assert.Equal(t, 300.0, res1.FriendBills[0].Amount)
 	assert.Equal(t, "test1", res1.FriendBills[0].Title)
 	assert.Equal(t, "test1", res1.FriendBills[0].Description)
+	assert.Equal(t, "friend_bill_nickId1", res1.FriendBills[0].InDebt)
 	assert.Equal(t, 500.0, res1.FriendBills[1].Amount)
 	assert.Equal(t, "test2", res1.FriendBills[1].Title)
 	assert.Equal(t, "test2", res1.FriendBills[1].Description)
+	assert.Equal(t, "friend_bill_nickId1", res1.FriendBills[1].InDebt)
 
 	// Test delete friend bill
 	_, err = client.DeleteFriendBill(context.TODO(), &monify.DeleteFriendBillRequest{FriendBillId: res1.FriendBills[0].FriendBillId})
@@ -71,6 +76,7 @@ func TestFriendBill(t *testing.T) {
 	assert.Equal(t, 500.0, res2.FriendBills[0].Amount)
 	assert.Equal(t, "test2", res2.FriendBills[0].Title)
 	assert.Equal(t, "test2", res2.FriendBills[0].Description)
+	assert.Equal(t, "friend_bill_nickId1", res2.FriendBills[0].InDebt)
 
 	// Test modify friend bill
 	_, err = client.ModifyFriendBill(context.TODO(), &monify.ModifyFriendBillRequest{
@@ -79,10 +85,12 @@ func TestFriendBill(t *testing.T) {
 		Amount:       1000,
 		Title:        "test3",
 		Description:  "test3",
+		InDebt:       "friend_bill_nickId2",
 	})
 	assert.NoError(t, err)
 	res3, err := client.ListFriendBill(context.TODO(), &monify.ListFriendBillRequest{RelationId: friendS_relationId[0]})
 	assert.Equal(t, 1000.0, res3.FriendBills[0].Amount)
 	assert.Equal(t, "test3", res3.FriendBills[0].Title)
 	assert.Equal(t, "test3", res3.FriendBills[0].Description)
+	assert.Equal(t, "friend_bill_nickId2", res3.FriendBills[0].InDebt)
 }

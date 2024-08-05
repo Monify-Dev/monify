@@ -38,9 +38,9 @@ func (s Service) ModifyFriendBill(ctx context.Context, req *monify.ModifyFriendB
 
 	// Insert
 	_, err = tx.ExecContext(ctx, `
-		INSERT INTO friend_bill (friend_bill_id, relation_id, amount, title, description)
-		VALUES ($1, $2, $3, $4, $5)
-	`, req.FriendBillId, req.RelationId, req.Amount, req.Title, req.Description)
+		INSERT INTO friend_bill (friend_bill_id, relation_id, amount, title, description, in_debt)
+		VALUES ($1, $2, $3, $4, $5, $6)
+	`, req.FriendBillId, req.RelationId, req.Amount, req.Title, req.Description, req.InDebt)
 	if err != nil {
 		logger.Error("Insert values into friend_bill error. (Modify)", zap.Error(err))
 		return nil, status.Error(codes.Internal, "")

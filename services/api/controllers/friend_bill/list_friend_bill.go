@@ -20,7 +20,7 @@ func (s Service) ListFriendBill(ctx context.Context, req *monify.ListFriendBillR
 	}
 	db := ctx.Value(lib.DatabaseContextKey{}).(*sql.DB)
 	query, err := db.QueryContext(ctx, `
-		SELECT friend_bill_id, amount, title, description
+		SELECT friend_bill_id, amount, title, description, in_debt
 		FROM friend_bill
 		WHERE relation_id = $1`, req.RelationId)
 	if err != nil {
@@ -35,7 +35,7 @@ func (s Service) ListFriendBill(ctx context.Context, req *monify.ListFriendBillR
 			break
 		}
 		var friend_bill monify.FriendBill
-		if err = query.Scan(&friend_bill.FriendBillId, &friend_bill.Amount, &friend_bill.Title, &friend_bill.Description); err != nil {
+		if err = query.Scan(&friend_bill.FriendBillId, &friend_bill.Amount, &friend_bill.Title, &friend_bill.Description, &friend_bill.InDebt); err != nil {
 			logger.Error("Scan friend bill information error.", zap.Error(err))
 			return nil, status.Error(codes.Internal, "")
 		}

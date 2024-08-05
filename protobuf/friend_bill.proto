@@ -37,6 +37,7 @@ message CreateFriendBillRequest {
     double amount = 2;
     string title = 3;
     string description = 4;
+    string in_debt = 5;
 }
 
 message CreateFriendBillResponse {
@@ -53,6 +54,7 @@ message ModifyFriendBillRequest {
     double amount = 3;
     string title = 4;
     string description = 5;
+    string in_debt = 6;
 }
 
 message ListFriendBillRequest {
@@ -69,4 +71,5 @@ message FriendBill {
     double amount = 2;
     string title = 3;
     string description = 4;
+    string in_debt = 5;
 }
